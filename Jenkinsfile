@@ -22,6 +22,9 @@ pipeline {
       }
     }
     stage('Code quality Analysis') {
+      agent{
+        label "slave-node"
+      }
       steps{
         sh'''
         sudo docker pull sonarqube
