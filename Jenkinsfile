@@ -21,17 +21,7 @@ pipeline {
         '''
       }
     }
-    stage('Code quality Analysis') {
-      steps{
-        sh'''
-        sudo docker pull sonarqube
-        sudo docker network create my-network6
-        sudo docker run -d --name my-container-db78 --network my-network6 -e POSTGRES_USER=sonar -e POSTGRES_PASSWORD=sonar -e POSTGRES_DB=sonar postgres:9.6
-        sudo docker run -d --name my-conatiner78 -p 9000:9000 --network my-network6 -e SONARQUBE_JDBC_URL=jdbc:postgresql://sonar-db:5432/sonar -e SONAR_JDBC_USERNAME=sonar -e SONAR_JDBC_PASSWORD=sonar sonarqube
-        
-        '''
-      }
-    }
+   
     stage('deploy to staging')  {
       steps{
         deploy adapters: [tomcat9(credentialsId: 'eefe689f-ef8f-473b-8533-a60d455615f3', path: '', url: 'http://172.31.16.41:8080')], contextPath: '/', war: '**/*.war'
