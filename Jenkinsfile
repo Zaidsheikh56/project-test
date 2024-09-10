@@ -21,5 +21,15 @@ pipeline {
         '''
       }
     }
+    stage('Code quality Analysis') {
+      steps{
+        sh'''
+        sudo docker pull sonarqube
+        sudo docker network create my-network
+        sudo docker run -d --name sonar-db --network my-network -e POSTGRES_USER=sonar -e POSTGRES_PASSWORD=sonar -e POSTGRES_DB=sonar postgres:9.6
+        sudo docker run -d --name sonar -p 9000:9000 --network my-network -e SONARQUBE_JDBC_URL=jdbc:postgresql://sonar-db:5432/sonar -e SONAR_JDBC_USERNAME=sonar -e SONAR_JDBC_PASSWORD=sonar sonarqube
+        '''
+      }
+    }
   }
 }
