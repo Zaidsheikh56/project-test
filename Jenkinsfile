@@ -27,7 +27,16 @@ pipeline {
         deploy adapters: [tomcat9(credentialsId: 'eefe689f-ef8f-473b-8533-a60d455615f3', path: '', url: 'http://172.31.16.41:8080')], contextPath: '/', war: '**/*.war'
       }
     }
+    stage('database server') {
+      steps {
+        sh'''
+        sudo yum install mariadb-server -y
+        sudo systemctl enable --now mariadb
+        '''
+      }
+    }
   }
 }
+
           
 
